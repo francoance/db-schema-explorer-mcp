@@ -6,12 +6,30 @@
   "bin": {
     "db-schema-explorer-mcp": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": ["mcp", "sql-server", "database", "schema"],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sql-server",
+    "database",
+    "schema",
+    "mssql"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fquintanilla/db-schema-explorer-mcp"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
     "mssql": "^12.2.0",

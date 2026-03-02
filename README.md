@@ -5,37 +5,51 @@ MCP server for exploring SQL Server database schemas. Exposes two tools over the
 - **`get_tables`** -- List table names, with optional name filter
 - **`get_table_schema`** -- Get columns and foreign keys for a given table
 
-## Setup
+## Quick Start
 
 ```bash
-npm install
-npm run build
+npx db-schema-explorer-mcp
+```
+
+Or install globally:
+
+```bash
+npm install -g db-schema-explorer-mcp
+db-schema-explorer-mcp
 ```
 
 ## Usage
 
 The server accepts a SQL Server connection string via **environment variable** (recommended) or **CLI argument**.
 
+Both `Server=` and `Data Source=` style connection strings are supported.
+
 ### Environment variable (recommended)
 
 ```bash
 # Linux / macOS
-DB_CONNECTION_STRING="Server=localhost;Database=MyDb;User Id=sa;Password=xxx;TrustServerCertificate=True" node dist/index.js
+DB_CONNECTION_STRING="Server=localhost;Database=MyDb;User Id=sa;Password=xxx;TrustServerCertificate=True" npx db-schema-explorer-mcp
 
 # Windows (cmd)
 set "DB_CONNECTION_STRING=Server=localhost;Database=MyDb;User Id=sa;Password=xxx;TrustServerCertificate=True"
-node dist/index.js
+npx db-schema-explorer-mcp
 ```
 
 ### CLI argument
 
 ```bash
-node dist/index.js "Server=localhost;Database=MyDb;User Id=sa;Password=xxx;TrustServerCertificate=True"
+npx db-schema-explorer-mcp "Server=localhost;Database=MyDb;User Id=sa;Password=xxx;TrustServerCertificate=True"
 ```
 
 > **Note:** On Windows, semicolons in connection strings can cause issues with shell argument parsing. Prefer the environment variable approach.
 
-Both `Server=` and `Data Source=` style connection strings are supported.
+## Development
+
+```bash
+npm install
+npm run build
+node dist/index.js
+```
 
 ## Testing
 
@@ -93,8 +107,8 @@ Should print the usage message and exit with code 1.
 {
   "mcpServers": {
     "db-schema-explorer": {
-      "command": "node",
-      "args": ["C:\\path\\to\\dist\\index.js"],
+      "command": "npx",
+      "args": ["-y", "db-schema-explorer-mcp"],
       "env": {
         "DB_CONNECTION_STRING": "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
       }
