@@ -1,0 +1,25 @@
+{
+  "name": "db-schema-explorer-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for exploring SQL Server database schemas",
+  "type": "module",
+  "bin": {
+    "db-schema-explorer-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": ["mcp", "sql-server", "database", "schema"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "mssql": "^12.2.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/mssql": "^9.1.9",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
