@@ -12,8 +12,16 @@ export interface ForeignKey {
   referencedColumn: string;
 }
 
+export interface TableIndex {
+  indexName: string;
+  isUnique: boolean;
+  isPrimaryKey: boolean;
+  columns: string[];
+}
+
 export interface TableSchema {
   tableName: string;
   columns: TableColumn[];
   foreignKeys: ForeignKey[];
+  indexes: TableIndex[];
 }

@@ -1,5 +1,5 @@
 import sql from "mssql";
-import type { TableColumn, ForeignKey, TableSchema } from "../models/types.js";
+import type { TableColumn, ForeignKey, TableIndex, TableSchema } from "../models/types.js";
 
 export async function getTables(
   pool: sql.ConnectionPool,
@@ -74,5 +74,41 @@ export async function getTableSchema(
     referencedColumn: row.referencedColumn as string,
   }));
 
-  return { tableName, columns, foreignKeys };
+  const indexRequest = pool.request();
+  indexRequest.input("tableName", sql.NVarChar, tableName);
+
+  const indexResult = await indexRequest.query(`
+    SELECT
+      i.name AS indexName,
+      i.is_unique AS isUnique,
+      i.is_primary_key AS isPrimaryKey,
+      c.name AS columnName
+    FROM sys.indexes i
+    JOIN sys.index_columns ic
+      ON i.object_id = ic.object_id AND i.index_id = ic.index_id
+    JOIN sys.columns c
+      ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+    JOIN sys.tables t
+      ON i.object_id = t.object_id
+    WHERE t.name = @tableName
+      AND i.name IS NOT NULL
+    ORDER BY i.name, ic.key_ordinal
+  `);
+
+  const indexMap = new Map<string, TableIndex>();
+  for (const row of indexResult.recordset) {
+    const name = row.indexName as string;
+    if (!indexMap.has(name)) {
+      indexMap.set(name, {
+        indexName: name,
+        isUnique: row.isUnique as boolean,
+        isPrimaryKey: row.isPrimaryKey as boolean,
+        columns: [],
+      });
+    }
+    indexMap.get(name)!.columns.push(row.columnName as string);
+  }
+  const indexes: TableIndex[] = Array.from(indexMap.values());
+
+  return { tableName, columns, foreignKeys, indexes };
 }

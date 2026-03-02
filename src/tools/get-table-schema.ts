@@ -12,7 +12,7 @@ export function registerGetTableSchemaTool(
     {
       title: "Get Table Schema",
       description:
-        "Get detailed schema information for a table, including columns (name, type, nullability) and foreign keys.",
+        "Get detailed schema information for a table, including columns (name, type, nullability), foreign keys, and indexes.",
       inputSchema: {
         tableName: z
           .string()
