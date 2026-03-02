@@ -101,7 +101,82 @@ Should print the usage message and exit with code 1.
 
 ## MCP Client Configuration
 
-### OpenCode / Claude Desktop / Cursor
+### Claude Desktop
+
+Add to `claude_desktop_config.json` (located at `%APPDATA%\Claude\` on Windows, `~/Library/Application Support/Claude/` on macOS):
+
+```json
+{
+  "mcpServers": {
+    "db-schema-explorer": {
+      "command": "npx",
+      "args": ["-y", "db-schema-explorer-mcp"],
+      "env": {
+        "DB_CONNECTION_STRING": "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
+      }
+    }
+  }
+}
+```
+
+### OpenCode
+
+Add to `.opencode/mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "db-schema-explorer": {
+      "command": "npx",
+      "args": ["-y", "db-schema-explorer-mcp"],
+      "env": {
+        "DB_CONNECTION_STRING": "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
+      }
+    }
+  }
+}
+```
+
+### Cursor
+
+Add to `.cursor/mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "db-schema-explorer": {
+      "command": "npx",
+      "args": ["-y", "db-schema-explorer-mcp"],
+      "env": {
+        "DB_CONNECTION_STRING": "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
+      }
+    }
+  }
+}
+```
+
+### VS Code (GitHub Copilot)
+
+Add to `.vscode/mcp.json` in your project root:
+
+```json
+{
+  "servers": {
+    "db-schema-explorer": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "db-schema-explorer-mcp"],
+      "env": {
+        "DB_CONNECTION_STRING": "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
+      }
+    }
+  }
+}
+```
+
+### Windsurf
+
+Add to `~/.codeium/windsurf/mcp_config.json`:
 
 ```json
 {
