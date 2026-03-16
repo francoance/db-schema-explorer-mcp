@@ -14,6 +14,8 @@ List table names in the database.
 |-----------|------|----------|-------------|
 | `nameFilter` | string | No | Partial match filter for table names |
 
+Returns plain text with one table name per line.
+
 ### `get_table_schema`
 
 Get detailed schema for a specific table.
@@ -22,7 +24,23 @@ Get detailed schema for a specific table.
 |-----------|------|----------|-------------|
 | `tableName` | string | Yes | Exact table name to inspect |
 
-Returns columns (name, data type, max length, nullability) and foreign keys (column, referenced table, referenced column, constraint name).
+Returns Markdown optimized for agent consumption with predictable sections for columns, foreign keys, and indexes.
+
+Example output:
+
+```md
+# Table: users
+
+## Columns
+- id | type: int | nullable: no | max_length: -
+- email | type: nvarchar | nullable: no | max_length: 255
+
+## Foreign Keys
+- FK_users_roles | column: role_id | references: roles.id
+
+## Indexes
+- PK_users | primary_key: yes | unique: yes | columns: id
+```
 
 ## MCP Client Configuration
 
@@ -170,7 +188,7 @@ Then run:
 npx @modelcontextprotocol/inspector --config inspector-config.json --server db-schema-explorer
 ```
 
-This opens a browser UI where you can call both tools interactively and see the JSON responses.
+This opens a browser UI where you can call both tools interactively and inspect the text and Markdown responses.
 
 ### 2. Raw JSON-RPC (quick smoke test)
 

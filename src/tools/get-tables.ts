@@ -37,7 +37,7 @@ export function registerGetTablesTool(
           content: [
             {
               type: "text" as const,
-              text: JSON.stringify(tables, null, 2),
+              text: tables.join("\n"),
             },
           ],
         };
