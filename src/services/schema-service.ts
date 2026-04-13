@@ -1,5 +1,42 @@
 import sql from "mssql";
-import type { TableColumn, ForeignKey, TableIndex, TableSchema } from "../models/types.js";
+import type { TableColumn, ForeignKey, TableIndex, TableSchema, QueryTableResult } from "../models/types.js";
+
+async function tableExists(
+  pool: sql.ConnectionPool,
+  tableName: string
+): Promise<boolean> {
+  const request = pool.request();
+  request.input("tableName", sql.NVarChar, tableName);
+  const result = await request.query(`
+    SELECT 1 AS found
+    FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = @tableName
+  `);
+  return result.recordset.length > 0;
+}
+
+export async function queryTable(
+  pool: sql.ConnectionPool,
+  tableName: string,
+  top: number,
+  orderBy: string,
+  filters?: string
+): Promise<QueryTableResult> {
+  if (!(await tableExists(pool, tableName))) {
+    throw new Error(`Table "${tableName}" not found.`);
+  }
+
+  const quotedTable = `[${tableName.replace(/]/g, "]]")}]`;
+  const whereClause = filters && filters.trim() ? ` WHERE ${filters}` : "";
+  const query = `SELECT TOP (@top) * FROM ${quotedTable}${whereClause} ORDER BY ${orderBy}`;
+
+  const request = pool.request();
+  request.input("top", sql.Int, top);
+
+  const result = await request.query(query);
+  const columns = Object.keys(result.recordset.columns ?? {});
+  return { tableName, columns, rows: result.recordset as Record<string, unknown>[] };
+}
 
 export async function getTables(
   pool: sql.ConnectionPool,

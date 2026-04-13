@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { registerGetTablesTool } from "./tools/get-tables.js";
 import { registerGetTableSchemaTool } from "./tools/get-table-schema.js";
+import { registerQueryTableTool } from "./tools/query-table.js";
 
 function parseConnectionString(connectionString: string): sql.config {
   const pairs = connectionString
@@ -80,6 +81,7 @@ async function main(): Promise<void> {
   // Register tools
   registerGetTablesTool(server, pool);
   registerGetTableSchemaTool(server, pool);
+  registerQueryTableTool(server, pool);
 
   // Start stdio transport
   const transport = new StdioServerTransport();

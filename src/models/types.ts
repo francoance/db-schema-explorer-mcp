@@ -25,3 +25,9 @@ export interface TableSchema {
   foreignKeys: ForeignKey[];
   indexes: TableIndex[];
 }
+
+export interface QueryTableResult {
+  tableName: string;
+  columns: string[];
+  rows: Record<string, unknown>[];
+}
